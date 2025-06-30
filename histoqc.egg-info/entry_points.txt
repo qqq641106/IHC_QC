@@ -1,0 +1,3 @@
+[console_scripts]
+histoqc_pipeline = histoqc.__main__:main
+histoqc_ui = histoqc.ui.__main__:main
