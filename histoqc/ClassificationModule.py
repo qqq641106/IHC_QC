@@ -21,8 +21,6 @@ from sklearn.ensemble import RandomForestClassifier
 
 import numpy as np
 
-import matplotlib.pyplot as plt
-
 
 def pixelWise(s, params):
     name = params.get("name", "classTask")
@@ -132,7 +130,7 @@ def compute_frangi(img, params):
     frangi_beta1 = float(params.get("frangi_beta1", .5))
     frangi_beta2 = float(params.get("frangi_beta2", 15))
     frangi_black_ridges = strtobool(params.get("frangi_black_ridges", "True"))
-    feat = frangi(rgb2gray(img), scale_range = frangi_scale_range, scale_step =frangi_scale_step, beta =frangi_beta1, gamma=frangi_beta2, black_ridges  =frangi_black_ridges)
+    feat = frangi(rgb2gray(img), scale_range=frangi_scale_range, scale_step=frangi_scale_step, beta=frangi_beta1, gamma=frangi_beta2, black_ridges=frangi_black_ridges)
     return feat[:, :, None]  # add singleton dimension
 
 
@@ -189,20 +187,19 @@ def byExampleWithFeatures(s, params):
                     s["warnings"].append(msg)
                     # convert to binary
                     mask = img_as_bool(mask)
-                
+
                 mask = mask.reshape(-1, 1)
 
-                if nsamples_per_example != -1: #sub sambling required
-                    nitems = nsamples_per_example if nsamples_per_example > 1 else int(mask.shape[0]*nsamples_per_example)
+                if nsamples_per_example != -1:  # sub sambling required
+                    nitems = nsamples_per_example if nsamples_per_example > 1 else int(mask.shape[0] * nsamples_per_example)
 
                     # set seed to random function if seed is not None
                     if s["seed"] is not None:
                         np.random.seed(int(s["seed"]))
-                    
+
                     idxkeep = np.random.choice(mask.shape[0], size=int(nitems))
                     eximg = eximg[idxkeep, :]
                     mask = mask[idxkeep]
-
 
                 model_vals.append(eximg)
                 model_labels = np.vstack((model_labels, mask))
